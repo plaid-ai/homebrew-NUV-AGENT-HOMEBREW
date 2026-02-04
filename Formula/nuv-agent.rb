@@ -3,9 +3,9 @@ class NuvAgent < Formula
 
   desc "Nuvion on-device agent"
   homepage "https://github.com/plaid-ai/NUV-agent"
-  url "https://github.com/plaid-ai/NUV-agent/releases/download/v0.1.14/nuv_agent-0.1.14.tar.gz"
-  sha256 "1a5df7c15191ed5a6c6cdf2623f73f0401c5892594cbb153747f7ef8fd25b1ab"
-  version "0.1.14"
+  url "https://github.com/plaid-ai/NUV-agent/releases/download/v0.1.15/nuv_agent-0.1.15.tar.gz"
+  sha256 "f90d7d22862837ba58834efc7d08f35aec08003456d4373d42a1382412a84a7e"
+  version "0.1.15"
   license "Proprietary"
 
   depends_on "python@3.14"
@@ -15,6 +15,7 @@ class NuvAgent < Formula
   depends_on "gst-plugins-bad"
   depends_on "gst-plugins-ugly"
   depends_on "gst-libav"
+  depends_on "ffmpeg"
   depends_on "gobject-introspection"
   depends_on "pygobject3"
 
@@ -254,6 +255,7 @@ class NuvAgent < Formula
       "DYLD_LIBRARY_PATH" => "#{HOMEBREW_PREFIX}/lib",
       "GI_TYPELIB_PATH" => "#{HOMEBREW_PREFIX}/lib/girepository-1.0",
       "GST_PLUGIN_PATH" => "#{HOMEBREW_PREFIX}/lib/gstreamer-1.0",
+      "PATH" => "#{HOMEBREW_PREFIX}/bin:#{HOMEBREW_PREFIX}/sbin:/usr/bin:/bin",
     }
     real_bin = libexec/"bin/nuv-agent"
     (bin/"nuv-agent").unlink if (bin/"nuv-agent").exist?
@@ -266,7 +268,8 @@ class NuvAgent < Formula
     environment_variables NUV_AGENT_CONFIG: etc/"nuv-agent/agent.env",
                           DYLD_LIBRARY_PATH: "#{HOMEBREW_PREFIX}/lib",
                           GI_TYPELIB_PATH: "#{HOMEBREW_PREFIX}/lib/girepository-1.0",
-                          GST_PLUGIN_PATH: "#{HOMEBREW_PREFIX}/lib/gstreamer-1.0"
+                          GST_PLUGIN_PATH: "#{HOMEBREW_PREFIX}/lib/gstreamer-1.0",
+                          PATH: "#{HOMEBREW_PREFIX}/bin:#{HOMEBREW_PREFIX}/sbin:/usr/bin:/bin"
     log_path var/"log/nuv-agent.log"
     error_log_path var/"log/nuv-agent.log"
   end
