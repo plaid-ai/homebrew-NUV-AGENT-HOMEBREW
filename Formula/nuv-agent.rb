@@ -3,9 +3,9 @@ class NuvAgent < Formula
 
   desc "Nuvion on-device agent"
   homepage "https://github.com/plaid-ai/NUV-agent"
-  url "https://github.com/plaid-ai/NUV-AGENT/releases/download/v0.1.32/nuv_agent-0.1.32.tar.gz"
-  sha256 "7e909f7f19c213408fb2c4d1d0b971fb9b17ba20419f6b07dd38928bdaa71819"
-  version "0.1.32"
+  url "https://github.com/plaid-ai/NUV-AGENT/releases/download/v0.1.33/nuv_agent-0.1.33.tar.gz"
+  sha256 "94ed1b9beb2ca981dc470b65304cdf15d5c6c1133cec137e7d93c2619b9c67c8"
+  version "0.1.33"
   license "Proprietary"
 
   depends_on "python@3.14"
