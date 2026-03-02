@@ -3,9 +3,9 @@ class NuvAgent < Formula
 
   desc "Nuvion on-device agent"
   homepage "https://github.com/plaid-ai/NUV-agent"
-  url "https://github.com/plaid-ai/NUV-AGENT/releases/download/v0.1.27/nuv_agent-0.1.27.tar.gz"
-  sha256 "123fd54bcc8fda3964e236fc24c9a5e3934cd927d2fceeb1cb845e53574e1d2a"
-  version "0.1.27"
+  url "https://github.com/plaid-ai/NUV-AGENT/releases/download/v0.1.28/nuv_agent-0.1.28.tar.gz"
+  sha256 "021392bbc5f014950346d29691f787fdfcbbd3af8bf9a9c301feedb5a73cc801"
+  version "0.1.28"
   license "Proprietary"
 
   depends_on "python@3.14"
@@ -321,6 +321,18 @@ class NuvAgent < Formula
     real_bin = libexec/"bin/nuv-agent"
     (bin/"nuv-agent").unlink if (bin/"nuv-agent").exist?
     (bin/"nuv-agent").write_env_script(real_bin, env)
+  end
+
+  def caveats
+    <<~EOS
+      Runtime bootstrap is enabled by default.
+      On macOS, `nuv-agent setup` / `nuv-agent run` will try to:
+      1) install Homebrew (if missing),
+      2) install docker + colima (if missing),
+      3) start a local Triton container when NUVION_ZSAD_BACKEND=triton.
+
+      If Docker Desktop is already running, it is used first. Colima is only a fallback.
+    EOS
   end
 
   service do
