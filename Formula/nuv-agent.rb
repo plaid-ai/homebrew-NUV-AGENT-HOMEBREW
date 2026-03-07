@@ -3,13 +3,14 @@ class NuvAgent < Formula
 
   desc "Nuvion on-device agent"
   homepage "https://github.com/plaid-ai/NUV-agent"
-  url "https://github.com/plaid-ai/NUV-AGENT/releases/download/v0.1.46/nuv_agent-0.1.46.tar.gz"
-  sha256 "7a4bdc3af463c735a33a3d70aa4e0618d343d2a6affdebb4b524ec98018ed0a7"
-  version "0.1.46"
+  url "https://github.com/plaid-ai/NUV-AGENT/releases/download/v0.1.47/nuv_agent-0.1.47.tar.gz"
+  sha256 "bac089934bd6b5aa505544be05a191f1e13d0047c3d69160baf576560e99d73f"
+  version "0.1.47"
   license "Proprietary"
 
   depends_on "python@3.14"
   depends_on "gstreamer"
+  depends_on "libnice-gstreamer"
   depends_on "gst-plugins-base"
   depends_on "gst-plugins-good"
   depends_on "gst-plugins-bad"
@@ -327,9 +328,10 @@ class NuvAgent < Formula
     end
 
     env = {
-      "DYLD_LIBRARY_PATH" => "#{HOMEBREW_PREFIX}/lib",
+      "DYLD_FALLBACK_LIBRARY_PATH" => "#{HOMEBREW_PREFIX}/lib:#{Formula["glib"].opt_lib}:#{Formula["gstreamer"].opt_lib}",
       "GI_TYPELIB_PATH" => "#{HOMEBREW_PREFIX}/lib/girepository-1.0",
-      "GST_PLUGIN_PATH" => "#{HOMEBREW_PREFIX}/lib/gstreamer-1.0",
+      "GST_PLUGIN_PATH" => "#{HOMEBREW_PREFIX}/lib/gstreamer-1.0:#{Formula["libnice-gstreamer"].opt_libexec}/gstreamer-1.0",
+      "GST_PLUGIN_SCANNER" => "#{Formula["gstreamer"].opt_libexec}/gstreamer-1.0/gst-plugin-scanner",
       "PYTHONNOUSERSITE" => "1",
       "PATH" => "#{HOMEBREW_PREFIX}/bin:#{HOMEBREW_PREFIX}/sbin:/usr/bin:/bin",
     }
@@ -359,9 +361,10 @@ class NuvAgent < Formula
     run [opt_bin/"nuv-agent", "run"]
     keep_alive true
     environment_variables NUV_AGENT_CONFIG: etc/"nuv-agent/agent.env",
-                          DYLD_LIBRARY_PATH: "#{HOMEBREW_PREFIX}/lib",
+                          DYLD_FALLBACK_LIBRARY_PATH: "#{HOMEBREW_PREFIX}/lib:#{Formula["glib"].opt_lib}:#{Formula["gstreamer"].opt_lib}",
                           GI_TYPELIB_PATH: "#{HOMEBREW_PREFIX}/lib/girepository-1.0",
-                          GST_PLUGIN_PATH: "#{HOMEBREW_PREFIX}/lib/gstreamer-1.0",
+                          GST_PLUGIN_PATH: "#{HOMEBREW_PREFIX}/lib/gstreamer-1.0:#{Formula["libnice-gstreamer"].opt_libexec}/gstreamer-1.0",
+                          GST_PLUGIN_SCANNER: "#{Formula["gstreamer"].opt_libexec}/gstreamer-1.0/gst-plugin-scanner",
                           PYTHONNOUSERSITE: "1",
                           PATH: "#{HOMEBREW_PREFIX}/bin:#{HOMEBREW_PREFIX}/sbin:/usr/bin:/bin"
     log_path var/"log/nuv-agent.log"
