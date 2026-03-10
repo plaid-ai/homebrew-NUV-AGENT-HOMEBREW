@@ -3,9 +3,9 @@ class NuvAgent < Formula
 
   desc "Nuvion on-device agent"
   homepage "https://github.com/plaid-ai/NUV-agent"
-  url "https://github.com/plaid-ai/NUV-AGENT/releases/download/v0.1.48/nuv_agent-0.1.48.tar.gz"
-  sha256 "8408cc48c91485c6173764af97df0df14368e9d25249da345a4bf4d880b6c3cd"
-  version "0.1.48"
+  url "https://github.com/plaid-ai/NUV-AGENT/releases/download/v0.1.49/nuv_agent-0.1.49.tar.gz"
+  sha256 "66c7b9c97d7a5b1cdd85d356ee5e567daac2525cc3a239c30504dae2f6dafcd7"
+  version "0.1.49"
   license "Proprietary"
 
   depends_on "python@3.14"
@@ -341,7 +341,17 @@ class NuvAgent < Formula
   end
 
   def caveats
+    art = <<~'ART'
+       _   _ _   ___      _    ____ _____ _   _ _____
+      | \ | | | | \ \    / /  / \  / ___| ____| \ | |_   _|
+      |  \| | | | |\ \  / /  / _ \| |  _|  _| |  \| | | |
+      | |\  | |_| | \ \/ /  / ___ \ |_| | |___| |\  | | |
+      |_| \_|\___/   \__/  /_/   \_\____|_____|_| \_| |_|
+    ART
+
     <<~EOS
+      #{art}
+
       Runtime bootstrap is enabled by default.
       On macOS, `nuv-agent setup` / `nuv-agent run` will try to:
       1) install Homebrew (if missing),
