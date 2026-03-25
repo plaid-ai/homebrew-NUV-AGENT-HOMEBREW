@@ -3,9 +3,9 @@ class NuvAgent < Formula
 
   desc "Nuvion on-device agent"
   homepage "https://github.com/plaid-ai/NUV-agent"
-  url "https://github.com/plaid-ai/NUV-AGENT/releases/download/v0.1.75/nuv_agent-0.1.75.tar.gz"
-  sha256 "07ae4b0eb24761bdbec4545d11c4689a33d5e8363504e0097d51299ceb62d92a"
-  version "0.1.75"
+  url "https://github.com/plaid-ai/NUV-AGENT/releases/download/v0.1.76/nuv_agent-0.1.76.tar.gz"
+  sha256 "c1824e4c490e773b10c03015abb0cbb995b7e1abf6166e734ccc29c5fa562f54"
+  version "0.1.76"
   license "Proprietary"
 
   depends_on "python@3.14"
@@ -103,11 +103,6 @@ class NuvAgent < Formula
   resource "urllib3" do
     url "https://files.pythonhosted.org/packages/39/08/aaaad47bc4e9dc8c725e68f9d04865dbcb2052843ff09c97b08904852d84/urllib3-2.6.3-py3-none-any.whl"
     sha256 "bf272323e553dfb2e87d9bfd225ca7b0f467b919d7bbd355436d3fd37cb0acd4"
-  end
-
-  resource "demo-video" do
-    url "https://upload.wikimedia.org/wikipedia/commons/a/af/Gigaset_Smartphone_Production_IV_Quality_Inspection.webm"
-    sha256 "9f1df90978a735f1836cf36777075e959bef20ba63b4546fb0feec38fb731dec"
   end
 
   resource "anyio" do
@@ -305,7 +300,6 @@ class NuvAgent < Formula
     venv = virtualenv_create(libexec, python, system_site_packages: true)
 
     resources.each do |r|
-      next if r.name == "demo-video"
       r.stage do
         wheel = Dir["*.whl"].first
         target = wheel ? Pathname.pwd/wheel : Pathname.pwd
@@ -317,16 +311,6 @@ class NuvAgent < Formula
     system python, "-m", "pip", "--python=#{venv.root}/bin/python", "install",
            "--no-deps", "--ignore-installed", "--no-compile", buildpath
     (etc/"nuv-agent").mkpath
-    demo_dir = var/"nuv-agent/demo"
-    demo_dir.mkpath
-
-    resource("demo-video").stage do
-      demo_src = Dir["*.webm"].first
-      if demo_src
-        cp demo_src, demo_dir/"exhibition-demo.webm"
-      end
-    end
-
     env = {
       "DYLD_FALLBACK_LIBRARY_PATH" => "#{HOMEBREW_PREFIX}/lib:#{Formula["glib"].opt_lib}:#{Formula["gstreamer"].opt_lib}",
       "GI_TYPELIB_PATH" => "#{HOMEBREW_PREFIX}/lib/girepository-1.0",
@@ -358,10 +342,8 @@ class NuvAgent < Formula
       2) install docker + colima (if missing),
       3) start a local Triton container when NUVION_ZSAD_BACKEND=triton.
 
-      Demo sample video installed:
-        #{var}/nuv-agent/demo/exhibition-demo.webm
       To run demo mode:
-        nuv-agent run --demo --demo-video #{var}/nuv-agent/demo/exhibition-demo.webm
+        nuv-agent run --demo
 
       If Docker Desktop is already running, it is used first. Colima is only a fallback.
     EOS
